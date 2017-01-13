@@ -11,7 +11,10 @@ Run this command
 ```
 # docker run -p <any port>:80 -d takayamaki/dodontof
 ```
-and connect your web browser to http://<IP address>:<any port>/
+and connect your web browser to 
+```
+http://<IP address>:<any port>/
+```
 
 ##Licence
 Modified BSD license following DodontoF
