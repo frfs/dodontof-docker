@@ -8,8 +8,9 @@ See :http://www.dodontof.com/ and https://github.com/torgtaitai/DodontoF
 
 ##Usage
 Run this command
-
+```
 # docker run -p <any port>:80 -d takayamaki/dodontof
+```
 and connect your web browser to http://<IP address>:<any port>/
 
 ##Licence
