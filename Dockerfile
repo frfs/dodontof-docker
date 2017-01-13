@@ -5,11 +5,12 @@ FROM  ruby:2.3-alpine
 MAINTAINER takayamaki
 
 RUN   apk add --no-cache --virtual deps wget gcc musl-dev make &&\
-      apk add --no-cache apache2 &&\
+      apk add --no-cache apache2 logrotate &&\
+      sed -i -e 's%/var/log/messages%#/var/log/messages%' /etc/logrotate.conf &&\
       mkdir /run/apache2 &&\
       ls /work || mkdir /work && cd /work &&\
-      wget -O dodontof.zip https://www.dropbox.com/s/hd26rf4pkbi1oci/DodontoF_Ver.1.48.00_sugar_chocolate_waffle.zip?dl=1 &&\
-      unzip dodontof.zip && rm dodontof.zip && cd DodontoF_WebSet/public_html &&\
+      wget -q -O dodontof.zip https://www.dropbox.com/s/hd26rf4pkbi1oci/DodontoF_Ver.1.48.00_sugar_chocolate_waffle.zip?dl=1 &&\
+      unzip -q dodontof.zip && rm dodontof.zip && cd DodontoF_WebSet/public_html &&\
       chmod 705 ../saveData \
                 imageUploadSpace \
                 imageUploadSpace/smallImages \
