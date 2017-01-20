@@ -4,10 +4,18 @@ FROM  ruby:2.3-alpine
 
 MAINTAINER takayamaki
 
-RUN   apk add --no-cache --virtual deps wget gcc musl-dev make &&\
-      apk add --no-cache apache2 logrotate &&\
+RUN   apk add --no-cache apache2 logrotate &&\
       sed -i -e 's%/var/log/messages%#/var/log/messages%' /etc/logrotate.conf &&\
-      mkdir /run/apache2 &&\
+      mkdir -p /run/apache2 &&\
+      sed -i -e 's%#LoadModule cgi_module modules/mod_cgi.so%LoadModule cgi_module modules/mod_cgi.so%' /etc/apache2/httpd.conf&&\
+      echo \<Directory "/var/www/localhost/htdocs/DodontoF"\> >> /etc/apache2/httpd.conf &&\
+      echo Options FollowSymLinks ExecCGI >> /etc/apache2/httpd.conf &&\
+      echo AddHandler cgi-script .rb .pl >> /etc/apache2/httpd.conf &&\
+      echo AddHandler application/x-shockwave-flash .swf >> /etc/apache2/httpd.conf &&\
+      echo \</Directory\> >> /etc/apache2/httpd.conf &&\
+      echo RedirectMatch permanent ^/$ /DodontoF/  >> /etc/apache2/httpd.conf &&\
+      rm -f ~/.ash_history
+RUN   apk add --no-cache --virtual deps wget &&\
       ls /work || mkdir /work && cd /work &&\
       wget -q -O dodontof.zip https://www.dropbox.com/s/hd26rf4pkbi1oci/DodontoF_Ver.1.48.00_sugar_chocolate_waffle.zip?dl=1 &&\
       unzip -q dodontof.zip && rm dodontof.zip && cd DodontoF_WebSet/public_html &&\
@@ -26,13 +34,10 @@ RUN   apk add --no-cache --virtual deps wget gcc musl-dev make &&\
       cd / &&\
       rm -rf /work &&\
       chown apache:apache -R /var/www/localhost/saveData /var/www/localhost/htdocs/* &&\
-      sed -i -e 's%#LoadModule cgi_module modules/mod_cgi.so%LoadModule cgi_module modules/mod_cgi.so%' /etc/apache2/httpd.conf&&\
-      echo \<Directory "/var/www/localhost/htdocs/DodontoF"\> >> /etc/apache2/httpd.conf &&\
-      echo Options FollowSymLinks ExecCGI >> /etc/apache2/httpd.conf &&\
-      echo AddHandler cgi-script .rb .pl >> /etc/apache2/httpd.conf &&\
-      echo AddHandler application/x-shockwave-flash .swf >> /etc/apache2/httpd.conf &&\
-      echo \</Directory\> >> /etc/apache2/httpd.conf &&\
-      echo RedirectMatch permanent ^/$ /DodontoF/  >> /etc/apache2/httpd.conf &&\
+      echo Order Deny,Allow > /var/www/localhost/htdocs/DodontoF/src_ruby/.htaccess &&\
+      echo Deny from all > /var/www/localhost/htdocs/DodontoF/src_ruby/.htaccess &&\
+      cp /var/www/localhost/htdocs/DodontoF/src_ruby/.htaccess /var/www/localhost/htdocs/DodontoF/src_bcdice/.htaccess  &&\
+      rm -f /var/www/localhost/htdocs/DodontoF/src_actionScript.zip &&\
       rm -f ~/.ash_history ~/.wget-hsts &&\
       apk del --purge deps
 EXPOSE 80
