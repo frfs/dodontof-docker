@@ -1,6 +1,6 @@
 FROM  alpine:3.5
 
-MAINTAINER takayamaki
+LABEL maintainer "frfs"
 
 RUN   apk add --no-cache ruby ruby-dev alpine-sdk apache2 logrotate ca-certificates &&\
       gem install --no-ri --no-rdoc json &&\
