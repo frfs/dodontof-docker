@@ -14,7 +14,7 @@ COPY  dodontof.conf /etc/apache2/conf.d/
 
 RUN   apk add --no-cache --virtual deps wget &&\
       mkdir -p /work && cd /work &&\
-      wget -nv -O dodontof.zip https://www.dropbox.com/s/mq5zsph5quqwzg1/DodontoF_Ver.1.49.00_okitegami.zip?dl=1 &&\
+      wget -nv -O dodontof.zip http://www.dodontof.com/DodontoF/DodontoF_Ver.1.49.02.zip &&\
       unzip -q dodontof.zip && rm dodontof.zip && cd DodontoF_WebSet/public_html &&\
       chmod 705 ../saveData \
                 imageUploadSpace \
